@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Panel</h1>
+        <div class="sidebar">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('portfolio') }}">Portfolio</a></li>
+                <li><a href="{{ url_for('leaderboard') }}">Leaderboard</a></li>
+                <li><a href="{{ url_for('trading') }}">Trading</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <h2>User Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Balance</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>${{ user.balance }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_user', user_id=user.id) }}" method="POST" style="display:inline;">
+                                <button type="submit">Delete</button>
+                            </form>
+                            <form action="{{ url_for('update_balance', user_id=user.id) }}" method="POST" style="display:inline;">
+                                <input type="number" name="balance" placeholder="New Balance" required>
+                                <button type="submit">Update Balance</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h2>Add New User</h2>
+            <form action="{{ url_for('add_user') }}" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" name="username" required>
+                <label for="email">Email:</label>
+                <input type="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" name="password" required>
+                <label for="role">Role:</label>
+                <select name="role">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <label for="balance">Balance:</label>
+                <input type="number" name="balance" required>
+                <button type="submit">Add User</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

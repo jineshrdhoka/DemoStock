@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ stock.name }} ({{ stock.symbol }})</h1>
+        <div class="sidebar">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('portfolio') }}">Portfolio</a></li>
+                <li><a href="{{ url_for('leaderboard') }}">Leaderboard</a></li>
+                <li><a href="{{ url_for('trading') }}">Trading</a></li>
+                {% if current_user.role == 'admin' %}
+                <li><a href="{{ url_for('admin') }}">Admin Panel</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <h2>Stock Details</h2>
+            <p>Price: ${{ stock.price }}</p>
+            <!-- TradingView chart here -->
+            <h2>Trade</h2>
+            <form id="trade-form">
+                <input type="hidden" name="stock_id" value="{{ stock.id }}">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" required>
+                <button type="submit">Buy</button>
+                <button type="submit">Sell</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
